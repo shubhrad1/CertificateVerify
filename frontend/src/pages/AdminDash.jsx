@@ -14,6 +14,10 @@ import { React, useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SendIcon from "@mui/icons-material/Send";
+import UploadIcon from "@mui/icons-material/Upload";
+import DoneIcon from "@mui/icons-material/Done";
 
 const AdminDash = () => {
     const [files, setFiles] = useState([]);
@@ -36,7 +40,7 @@ const AdminDash = () => {
             });
     }, [uploadTrigger, token]);
 
-    const issueCertificate = (fileName) => {
+    const issueCertificate = (fileName, id) => {
         axios
             .post(
                 `http://localhost:8080/v1/api/parse`,
@@ -52,7 +56,29 @@ const AdminDash = () => {
             .then((res) => {
                 if (res.status === 200) {
                     alert("Certificates Issued Successfully");
+                    handlePrinted(id);
                 }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
+    const handlePrinted = (id) => {
+        axios
+            .post(
+                `http://localhost:8080/v1/api/updatePrinted`,
+                {
+                    id: id,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
+            .then((res) => {
+                setUploadTrigger(uploadTrigger + 1);
             })
             .catch((err) => {
                 console.log(err);
@@ -62,6 +88,8 @@ const AdminDash = () => {
     const recordRow = (record) => {
         const fileName = record.filename;
         const uploadDate = record.timeUploaded;
+        const id = record._id;
+        const isPrinted = record.printed;
         return (
             <TableRow>
                 <TableCell sx={{ textAlign: "center", width: "33%" }}>
@@ -71,13 +99,25 @@ const AdminDash = () => {
                     {uploadDate}
                 </TableCell>
                 <TableCell sx={{ textAlign: "center", width: "33%" }}>
-                    <Button
-                        variant="contained"
-                        color="success"
-                        onClick={() => issueCertificate(fileName)}
-                    >
-                        Issue Certificate
-                    </Button>
+                    {isPrinted ? (
+                        <Button
+                            variant="outlined"
+                            color="success"
+                            endIcon={<DoneIcon />}
+                            disabled
+                        >
+                            Issued
+                        </Button>
+                    ) : (
+                        <Button
+                            variant="contained"
+                            color="success"
+                            onClick={() => issueCertificate(fileName, id)}
+                            endIcon={<SendIcon />}
+                        >
+                            Issue
+                        </Button>
+                    )}
                 </TableCell>
             </TableRow>
         );
@@ -97,7 +137,7 @@ const AdminDash = () => {
                         width: "80%",
                         margin: "0 auto",
                         textAlign: "left",
-                        padding: "10px",
+                        padding: "20px",
                     }}
                 >
                     <Typography>Files To Upload:</Typography>
@@ -156,6 +196,7 @@ const AdminDash = () => {
                         color="success"
                         value={index}
                         onClick={() => handleUpload(index)}
+                        endIcon={<UploadIcon />}
                     >
                         Upload
                     </Button>
@@ -164,6 +205,7 @@ const AdminDash = () => {
                         color="warning"
                         value={index}
                         onClick={handleDelete(index)}
+                        endIcon={<DeleteIcon />}
                     >
                         Delete
                     </Button>

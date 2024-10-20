@@ -14,6 +14,10 @@ const UploadRecordSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    printed: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const UploadRecord = mongoose.model("UploadRecord", UploadRecordSchema);

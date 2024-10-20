@@ -163,6 +163,7 @@ function SignIn() {
                         onClick={() => {
                             navigate("/user/signup");
                         }}
+                        style={{ cursor: "pointer" }}
                     >
                         {"Don't have an account? Sign Up"}
                     </Link>

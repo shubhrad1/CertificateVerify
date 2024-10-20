@@ -10,7 +10,7 @@ const authControl = require("./controllers/authController");
 const getAll = require("./controllers/getAll");
 const getData = require("./controllers/getData");
 const certificate = require("../frontend/src/components/DownloadPDF/certificate");
-const getRecords = require("./controllers/getRecords");
+const records = require("./controllers/getRecords");
 const UploadRecord = require("./models/UploadRecord");
 const getUserById = require("./controllers/getUserbyID");
 
@@ -58,10 +58,13 @@ v1Router.get("/certificate", (req, res) => {
     res.send(certificate());
 });
 v1Router.get("/records", authentication, async (req, res) => {
-    getRecords(req, res);
+    records.getRecords(req, res);
 });
 v1Router.get("/userbyId", authentication, (req, res) => {
     getUserById(req, res);
+});
+v1Router.post("/updatePrinted", authentication, (req, res) => {
+    records.updatePrinted(req, res);
 });
 v1Router.post(
     "/upload",
