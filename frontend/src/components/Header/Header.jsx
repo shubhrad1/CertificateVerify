@@ -16,15 +16,18 @@ const Header = () => {
         : sessionStorage.getItem("token");
 
     const navigateSignIn = () => {
-        navigate("/user/signin");
+        navigate("/signin");
     };
     const navigateSignUp = () => {
-        navigate("/user/signup");
+        navigate("/signup");
     };
     const navigateSignOut = () => {
         sessionStorage.clear();
         cookies.remove("token");
         setName("");
+        navigate("/");
+    };
+    const navigateHome = () => {
         navigate("/");
     };
 
@@ -101,14 +104,18 @@ const Header = () => {
         }
     };
     return (
-        <div>
-            <AppBar position="fixed" color="primary">
-                <Toolbar>
-                    <Typography variant="h6">CertiCheck</Typography>
-                    {ControlButtons(token)}
-                </Toolbar>
-            </AppBar>
-        </div>
+        <AppBar position="sticky" color="primary" sx={{ zIndex: 2 }}>
+            <Toolbar>
+                <Typography
+                    variant="h6"
+                    onClick={navigateHome}
+                    sx={{ cursor: "pointer" }}
+                >
+                    CertiCheck
+                </Typography>
+                {ControlButtons(token)}
+            </Toolbar>
+        </AppBar>
     );
 };
 

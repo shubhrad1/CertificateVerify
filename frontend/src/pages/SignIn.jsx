@@ -161,7 +161,7 @@ function SignIn() {
                     <Link
                         variant="body2"
                         onClick={() => {
-                            navigate("/user/signup");
+                            navigate("/signup");
                         }}
                         style={{ cursor: "pointer" }}
                     >

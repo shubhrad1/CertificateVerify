@@ -41,7 +41,7 @@ function SignUp() {
                     setName("");
                     setEmail("");
                     setPassword("");
-                    navigate("/user/signin");
+                    navigate("/signin");
                 })
                 .catch((err) => {
                     console.log(err);
@@ -60,7 +60,7 @@ function SignUp() {
                     setName("");
                     setEmail("");
                     setPassword("");
-                    navigate("/user/signin");
+                    navigate("/signin");
                 })
                 .catch((err) => {
                     console.log(err);
